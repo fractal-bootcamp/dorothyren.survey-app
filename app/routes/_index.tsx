@@ -1,4 +1,13 @@
 import type { MetaFunction } from "@remix-run/node";
+import { Form, useLoaderData } from "@remix-run/react";
+
+
+let surveys = [
+  {
+    id: "1",
+    title: "survey1",
+  },
+]
 
 export const meta: MetaFunction = () => {
   return [
@@ -7,35 +16,37 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+// export const action = async ({ request }) => {
+
+//   return null
+//   //return a response
+// }
+
+export const loader = async () => {
+  return ({ message: "Welcome to remix!" });
+}
+
+
+
 export default function Index() {
+  const message = useLoaderData<typeof loader>();
+
+  // Create a survey 
+  // get all existing surveys
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1>Welcome to Remix</h1>
-      <ul>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/start/quickstart"
-            rel="noreferrer"
-          >
-            5m Quick Start
-          </a>
-        </li>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/start/tutorial"
-            rel="noreferrer"
-          >
-            30m Tutorial
-          </a>
-        </li>
-        <li>
-          <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
-            Remix Docs
-          </a>
-        </li>
-      </ul>
-    </div>
+
+
+      <Form method="POST" action="/messages">
+
+      </Form>
+
+
+      <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
+        Remix Docs
+      </a>
+      {/* </li>
+      </ul > */}
+    </div >
   );
 }
