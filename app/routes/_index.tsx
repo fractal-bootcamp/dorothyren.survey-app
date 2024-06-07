@@ -1,20 +1,20 @@
+import { PrismaClient } from "@prisma/client";
 import type { MetaFunction } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
+import client from "~/client";
 
+export const loader = async () => {
+  const surveys = await client.survey.findMany();
+  console.log(surveys)
+  return { surveys: surveys }
+}
+//   let surveys = [
+//   {
+//     id: "1",
+//     title: "Survey 1",
+//   },
+// ]
 
-let surveys = [
-  {
-    id: "1",
-    title: "survey1",
-  },
-]
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
-  ];
-};
 
 // export const action = async ({ request }) => {
 
@@ -22,31 +22,32 @@ export const meta: MetaFunction = () => {
 //   //return a response
 // }
 
-export const loader = async () => {
-  return ({ message: "Welcome to remix!" });
-}
-
-
 
 export default function Index() {
-  const message = useLoaderData<typeof loader>();
-
+  const data = useLoaderData<typeof loader>();
+  const surveys = data.surveys
   // Create a survey 
   // get all existing surveys
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
+    <><div className="text-lg">
+      <h1>Survey List</h1>
+    </div><ul>
+        {surveys.map((element, index, array) => {
+          const survey = element
+          console.log(survey)
+          return (
+            <>
+              <div className="flex">
+                <li key={survey.id}>{survey.title}</li>
+                <button className="bg-green-500 border border-gray-500 flex flex-row"> Take this survey </button>
+              </div>
 
-
-      <Form method="POST" action="/messages">
-
-      </Form>
-
-
-      <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
-        Remix Docs
-      </a>
-      {/* </li>
-      </ul > */}
-    </div >
+            </>
+          )
+        }
+        )}
+      </ul></>
   );
-}
+};
+
+
